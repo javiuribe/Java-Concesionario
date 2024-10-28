@@ -6,10 +6,10 @@ public class Cliente {
     private String apellidos;
     private String telefono;
 
-    public Cliente(String apellidos, String dni, String nombre, String telefono) {
-        this.apellidos = apellidos;
+    public Cliente(String dni, String nombre,String apellidos, String telefono) {
         this.dni = dni;
         this.nombre = nombre;
+        this.apellidos = apellidos;
         this.telefono = telefono;
     }
 
@@ -43,5 +43,15 @@ public class Cliente {
 
     public void setTelefono(String telefono) {
         this.telefono = telefono;
+    }
+
+    @Override
+    public String toString() {
+        return "Cliente{" +
+                "dni='" + dni + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", apellidos='" + apellidos + '\'' +
+                ", telefono='" + telefono + '\'' +
+                '}';
     }
 }
