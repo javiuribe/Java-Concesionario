@@ -27,4 +27,12 @@ public class ControladorCliente {
     public Cliente leerCliente(String dni) throws SQLException {
         return clienteDao.readClienteByDni(dni);
     }
+
+    public void updateCliente(Cliente cliente) throws SQLException {
+        clienteDao.updateCliente(cliente);
+    }
+
+    public void deleteCliente(Cliente cliente) throws SQLException {
+        clienteDao.deleteCliente(cliente);
+    }
 }

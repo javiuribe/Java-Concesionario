@@ -8,6 +8,6 @@ public interface ClienteDao {
 
     void createCliente(Cliente cliente) throws SQLException;
     Cliente readClienteByDni(String dni) throws SQLException;
-    void updateCliente(Cliente cliente);
-    void deleteCliente(Cliente cliente);
+    void updateCliente(Cliente cliente) throws SQLException;
+    void deleteCliente(Cliente cliente) throws SQLException;
 }

@@ -24,6 +24,7 @@ public class Main {
         try {
             Cliente cliente =controlador.leerCliente("1111A");
             System.out.println(cliente);
+            controlador.deleteCliente(cliente);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

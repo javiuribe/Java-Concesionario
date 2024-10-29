@@ -72,12 +72,25 @@ public class JdbcClienteDao implements ClienteDao {
     }
 
     @Override
-    public void updateCliente(Cliente cliente) {
-
+    public void updateCliente(Cliente cliente) throws SQLException{
+        String query = "UPDATE cliente SET nombre = ?, apellidos = ?, telefono = ? WHERE dni = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, cliente.getNombre());
+            stmt.setString(2, cliente.getApellidos());
+            stmt.setString(3, cliente.getTelefono());
+            stmt.setString(4, cliente.getDni());
+            stmt.executeUpdate();
+        }
     }
 
     @Override
-    public void deleteCliente(Cliente cliente) {
-
+    public void deleteCliente(Cliente cliente) throws SQLException {
+        String query = "DELETE FROM cliente WHERE dni = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, cliente.getDni());
+            stmt.executeUpdate();
+        }
     }
 }
