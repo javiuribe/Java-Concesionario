@@ -3,21 +3,24 @@ package org.example.modelo;
 import java.util.Date;
 
 public class Coche {
-    private int matricula;
+    private String matricula;
     private String marca;
     private String modelo;
     private Date fecha;
     private Cliente propietario;
 
-    public Coche(int matricula, String marca, String modelo, Date fecha, Cliente propietario) {
+    public Coche(String matricula, String marca, String modelo, Date fecha) {
         this.matricula = matricula;
         this.marca = marca;
         this.modelo = modelo;
         this.fecha = fecha;
+    }
+    public Coche(String matricula, String marca, String modelo, Date fecha, Cliente propietario) {
+        this( matricula, marca, modelo, fecha);
         this.propietario = propietario;
     }
 
-    public int getMatricula() {
+    public String getMatricula() {
         return matricula;
     }
 
@@ -37,7 +40,7 @@ public class Coche {
         return propietario;
     }
 
-    public void setMatricula(int matricula) {
+    public void setMatricula(String matricula) {
         this.matricula = matricula;
     }
 
@@ -55,5 +58,16 @@ public class Coche {
 
     public void setPropietario(Cliente propietario) {
         this.propietario = propietario;
+    }
+
+    @Override
+    public String toString() {
+        return "Coche{" +
+                "matricula='" + matricula + '\'' +
+                ", marca='" + marca + '\'' +
+                ", modelo='" + modelo + '\'' +
+                ", fecha=" + fecha +
+                ", propietario=" + propietario +
+                '}';
     }
 }

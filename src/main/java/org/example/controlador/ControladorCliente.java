@@ -6,11 +6,8 @@ import org.example.modelo.Cliente;
 
 import java.sql.SQLException;
 
-import java.util.logging.Logger;
-
 public class ControladorCliente {
-    private ClienteDao clienteDao = null;
-    private static final Logger logger = Logger.getLogger(ControladorCliente.class.getName());
+    private ClienteDao clienteDao;
 
     public ControladorCliente() throws SQLException {
         this.clienteDao = new JdbcClienteDao();
