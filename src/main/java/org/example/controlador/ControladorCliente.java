@@ -15,21 +15,21 @@ public class ControladorCliente {
 
     public void registrarCliente(Cliente cliente) {
         try {
-            clienteDao.createCliente(cliente);
+            clienteDao.save(cliente);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     public Cliente leerCliente(String dni) throws SQLException {
-        return clienteDao.readClienteByDni(dni);
+        return clienteDao.findByDni(dni);
     }
 
     public void updateCliente(Cliente cliente) throws SQLException {
-        clienteDao.updateCliente(cliente);
+        clienteDao.update(cliente);
     }
 
     public void deleteCliente(Cliente cliente) throws SQLException {
-        clienteDao.deleteCliente(cliente);
+        clienteDao.deleteByDni(cliente);
     }
 }

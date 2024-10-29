@@ -6,8 +6,8 @@ import java.sql.SQLException;
 
 public interface ClienteDao {
 
-    void createCliente(Cliente cliente) throws SQLException;
-    Cliente readClienteByDni(String dni) throws SQLException;
-    void updateCliente(Cliente cliente) throws SQLException;
-    void deleteCliente(Cliente cliente) throws SQLException;
+    void save(Cliente cliente) throws SQLException;
+    Cliente findByDni(String dni) throws SQLException;
+    void update(Cliente cliente) throws SQLException;
+    void deleteByDni(String dni) throws SQLException;
 }

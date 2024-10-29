@@ -37,7 +37,7 @@ public class JdbcClienteDao implements ClienteDao {
     }
 
     @Override
-    public void createCliente(Cliente cliente) throws SQLException {
+    public void save(Cliente cliente) throws SQLException {
         String queryCliente = "INSERT INTO cliente (dni, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
         try (Connection conn = getConnection();
              PreparedStatement stmtCliente = conn.prepareStatement(queryCliente);
@@ -52,7 +52,7 @@ public class JdbcClienteDao implements ClienteDao {
     }
 
     @Override
-    public Cliente readClienteByDni(String dni) throws SQLException {
+    public Cliente findByDni(String dni) throws SQLException {
         String queryCliente = "SELECT * FROM cliente WHERE dni = ?";
         String queryCoche = "SELECT * FROM coche WHERE propietario = ?";
         try (Connection conn = getConnection();
@@ -91,7 +91,7 @@ public class JdbcClienteDao implements ClienteDao {
     }
 
     @Override
-    public void updateCliente(Cliente cliente) throws SQLException {
+    public void update(Cliente cliente) throws SQLException {
         String query = "UPDATE cliente SET nombre = ?, apellidos = ?, telefono = ? WHERE dni = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -104,11 +104,11 @@ public class JdbcClienteDao implements ClienteDao {
     }
 
     @Override
-    public void deleteCliente(Cliente cliente) throws SQLException {
+    public void deleteByDni(String dni) throws SQLException {
         String query = "DELETE FROM cliente WHERE dni = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, cliente.getDni());
+            stmt.setString(1, dni);
             stmt.executeUpdate();
         }
     }
