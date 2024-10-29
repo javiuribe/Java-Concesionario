@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente {
+
     private String dni;
     private String nombre;
     private String apellidos;
