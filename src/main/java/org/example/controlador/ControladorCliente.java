@@ -30,6 +30,6 @@ public class ControladorCliente {
     }
 
     public void deleteCliente(Cliente cliente) throws SQLException {
-        clienteDao.deleteByDni(cliente.getDni());
+        clienteDao.delete(cliente);
     }
 }

@@ -3,7 +3,6 @@ package org.example.controlador.dao.impl;
 import org.example.controlador.dao.ClienteDao;
 import org.example.controlador.dao.CocheDao;
 import org.example.modelo.Cliente;
-import org.example.modelo.Coche;
 
 import java.sql.*;
 import static org.example.utils.DatabaseConf.*;
@@ -46,7 +45,7 @@ public class JdbcClienteDao implements ClienteDao {
                             rs.getString("apellidos"),
                             rs.getString("telefono")
                     );
-                    cliente.setCoches(cocheDao.getCochesByPropietarioDni(dni));
+                    cliente.setCoches(cocheDao.findByPropietario(dni));
                     return cliente;
                 }
             }
@@ -68,11 +67,11 @@ public class JdbcClienteDao implements ClienteDao {
     }
 
     @Override
-    public void deleteByDni(String dni) throws SQLException {
+    public void delete(Cliente cliente) throws SQLException {
         String query = "DELETE FROM cliente WHERE dni = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
-            stmt.setString(1, dni);
+            stmt.setString(1, cliente.getDni());
             stmt.executeUpdate();
         }
     }

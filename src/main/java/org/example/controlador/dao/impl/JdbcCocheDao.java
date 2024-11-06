@@ -32,13 +32,13 @@ public class JdbcCocheDao implements CocheDao {
     }
 
     @Override
-    public Coche findByMatricula(String dni) throws SQLException {
+    public Coche findByMatricula(String matricula) throws SQLException {
         String queryCoche = "SELECT * FROM coche WHERE matricula = ?";
         String queryCliente = "SELECT * FROM cliente WHERE dni = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmtCoche = conn.prepareStatement(queryCoche);
              PreparedStatement stmtCliente = conn.prepareStatement(queryCliente)) {
-            stmtCoche.setString(1, dni);
+            stmtCoche.setString(1, matricula);
             try (ResultSet rsCoche = stmtCoche.executeQuery()) {
                 if (rsCoche.next()) {
                     Coche coche = new Coche(
@@ -69,7 +69,7 @@ public class JdbcCocheDao implements CocheDao {
 
 
     @Override
-    public void updateCoche(Coche coche) throws SQLException {
+    public void update(Coche coche) throws SQLException {
         String query = "UPDATE coche SET marca = ?, modelo = ?, fecha = ?, propietario = ? WHERE matricula = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -84,7 +84,7 @@ public class JdbcCocheDao implements CocheDao {
 
 
     @Override
-    public void deleteCoche(Coche coche) throws SQLException {
+    public void delete(Coche coche) throws SQLException {
         String query = "DELETE FROM coche WHERE matricula = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -94,7 +94,7 @@ public class JdbcCocheDao implements CocheDao {
     }
 
     @Override
-    public List<Coche> getCochesByPropietarioDni(String dniPropietario) throws SQLException {
+    public List<Coche> findByPropietario(String dniPropietario) throws SQLException {
         List<Coche> coches = new ArrayList<>();
         String query = "SELECT * FROM coche WHERE propietario = ?";
         try (Connection conn = getConnection();

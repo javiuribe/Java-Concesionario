@@ -26,11 +26,11 @@ public class ControladorCoche {
     }
 
     public void updateCoche(Coche coche) throws SQLException {
-        cocheDao.updateCoche(coche);
+        cocheDao.update(coche);
     }
 
     public void deleteCoche(Coche coche) throws SQLException {
-        cocheDao.deleteCoche(coche);
+        cocheDao.delete(coche);
     }
 
 }
