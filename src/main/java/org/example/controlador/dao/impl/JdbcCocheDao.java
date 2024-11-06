@@ -67,11 +67,27 @@ public class JdbcCocheDao implements CocheDao {
 
     @Override
     public void updateCoche(Coche coche) throws SQLException {
-
+        String query = "UPDATE coche SET marca = ?, modelo = ?, fecha = ?, propietario = ? WHERE matricula = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, coche.getMarca());
+            stmt.setString(2, coche.getModelo());
+            stmt.setDate(3, new java.sql.Date(coche.getFecha().getTime()));
+            stmt.setString(4, coche.getPropietario().getDni());
+            stmt.setString(5, coche.getMatricula());
+            stmt.executeUpdate();
+        }
     }
+
 
     @Override
     public void deleteCoche(Coche coche) throws SQLException {
-
+        String query = "DELETE FROM coche WHERE matricula = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, coche.getMatricula());
+            stmt.executeUpdate();
+        }
     }
+
 }
