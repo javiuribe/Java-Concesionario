@@ -1,5 +1,6 @@
 package org.example.controlador.dao.impl;
 
+import org.example.controlador.dao.ClienteDao;
 import org.example.controlador.dao.CocheDao;
 import org.example.modelo.Cliente;
 import org.example.modelo.Coche;
@@ -11,6 +12,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcCocheDao implements CocheDao {
+    private ClienteDao clienteDao;
+
+    public JdbcCocheDao() throws SQLException {
+        this.clienteDao = new JdbcClienteDao();
+    }
 
 
     public Connection getConnection() throws SQLException {
@@ -48,18 +54,8 @@ public class JdbcCocheDao implements CocheDao {
                             rsCoche.getDate("fecha")
                     );
                     String dniPropietario = rsCoche.getString("propietario");
-                    stmtCliente.setString(1, dniPropietario);
-                    try (ResultSet rsCliente = stmtCliente.executeQuery()) {
-                        if (rsCliente.next()) {
-                            Cliente cliente = new Cliente(
-                                    rsCliente.getString("dni"),
-                                    rsCliente.getString("nombre"),
-                                    rsCliente.getString("apellidos"),
-                                    rsCliente.getString("telefono")
-                            );
-                            coche.setPropietario(cliente);
-                        }
-                    }
+                    Cliente propietario = clienteDao.findByDni(dniPropietario);
+                    coche.setPropietario(propietario);
                     return coche;
                 }
             }
