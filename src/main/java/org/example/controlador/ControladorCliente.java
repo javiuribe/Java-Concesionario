@@ -13,15 +13,15 @@ public class ControladorCliente {
         this.clienteDao = new JdbcClienteDao();
     }
 
-    public void registrarCliente(Cliente cliente) {
-        try {
-            clienteDao.save(cliente);
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
+    public void registrarCliente(Cliente cliente) throws SQLException {
+        Cliente clienteEncontrado = buscarCliente(cliente.getDni());
+        if (clienteEncontrado != null) {
+            throw new IllegalArgumentException("El cliente con DNI:" + clienteEncontrado.getDni() + " ya existe");
         }
+        clienteDao.save(cliente);
     }
 
-    public Cliente leerCliente(String dni) throws SQLException {
+    public Cliente buscarCliente(String dni) throws SQLException {
         return clienteDao.findByDni(dni);
     }
 

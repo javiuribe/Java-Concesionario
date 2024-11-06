@@ -20,7 +20,6 @@ public class JdbcClienteDao implements ClienteDao {
         String queryCliente = "INSERT INTO cliente (dni, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
         try (Connection conn = getConnection();
              PreparedStatement stmtCliente = conn.prepareStatement(queryCliente);
-             PreparedStatement stmtCoche = conn.prepareStatement(queryCliente)
         ) {
             stmtCliente.setString(1, cliente.getDni());
             stmtCliente.setString(2, cliente.getNombre());

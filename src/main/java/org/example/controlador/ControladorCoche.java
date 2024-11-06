@@ -1,10 +1,7 @@
 package org.example.controlador;
 
-import org.example.controlador.dao.ClienteDao;
 import org.example.controlador.dao.CocheDao;
-import org.example.controlador.dao.impl.JdbcClienteDao;
 import org.example.controlador.dao.impl.JdbcCocheDao;
-import org.example.modelo.Cliente;
 import org.example.modelo.Coche;
 
 import java.sql.SQLException;
@@ -17,15 +14,15 @@ public class ControladorCoche {
     }
 
     public void agregarCoche(Coche coche) throws SQLException {
-        Coche cocheExistente = cocheDao.readCocheByMatricula(coche.getMatricula());
+        Coche cocheExistente = cocheDao.findByMatricula(coche.getMatricula());
         if (cocheExistente != null) {
             throw new IllegalArgumentException("El coche con matrícula " + coche.getMatricula() + " ya existe.");
         }
-        cocheDao.createCoche(coche);
+        cocheDao.save(coche);
     }
 
     public Coche leerCoche(String dni) throws SQLException {
-        return cocheDao.readCocheByMatricula(dni);
+        return cocheDao.findByMatricula(dni);
     }
 
     public void updateCoche(Coche coche) throws SQLException {

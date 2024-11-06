@@ -15,6 +15,10 @@ public class Main {
     public static void main(String[] args) {
         try {
             DatabaseConf.dropAndCreateTables();
+            ControladorCliente controladorCliente = new ControladorCliente();
+            controladorCliente.registrarCliente(new Cliente("11111Z", "Ana", "Rodriguez", "+3411111"));
+            Cliente cliente = controladorCliente.buscarCliente("11111Z");
+            System.out.println(cliente);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

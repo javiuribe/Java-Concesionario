@@ -15,7 +15,7 @@ public class JdbcCocheDao implements CocheDao {
     }
 
     @Override
-    public void createCoche(Coche coche) throws SQLException {
+    public void save(Coche coche) throws SQLException {
         String queryCoche = "INSERT INTO coche (matricula, marca, modelo, fecha, propietario) VALUES (?,?,?,?,?)";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(queryCoche)) {
@@ -29,7 +29,7 @@ public class JdbcCocheDao implements CocheDao {
     }
 
     @Override
-    public Coche readCocheByMatricula(String dni) throws SQLException {
+    public Coche findByMatricula(String dni) throws SQLException {
         String queryCoche = "SELECT * FROM coche WHERE matricula = ?";
         String queryCliente = "SELECT * FROM cliente WHERE dni = ?";
         try (Connection conn = getConnection();
