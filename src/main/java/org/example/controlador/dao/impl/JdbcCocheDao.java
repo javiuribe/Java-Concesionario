@@ -7,8 +7,11 @@ import org.example.modelo.Coche;
 import static org.example.utils.DatabaseConf.*;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JdbcCocheDao implements CocheDao {
+
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
@@ -88,6 +91,28 @@ public class JdbcCocheDao implements CocheDao {
             stmt.setString(1, coche.getMatricula());
             stmt.executeUpdate();
         }
+    }
+
+    @Override
+    public List<Coche> getCochesByPropietarioDni(String dniPropietario) throws SQLException {
+        List<Coche> coches = new ArrayList<>();
+        String query = "SELECT * FROM coche WHERE propietario = ?";
+        try (Connection conn = getConnection();
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, dniPropietario);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Coche coche = new Coche(
+                            rs.getString("matricula"),
+                            rs.getString("marca"),
+                            rs.getString("modelo"),
+                            rs.getDate("fecha")
+                    );
+                    coches.add(coche);
+                }
+            }
+        }
+        return coches;
     }
 
 }

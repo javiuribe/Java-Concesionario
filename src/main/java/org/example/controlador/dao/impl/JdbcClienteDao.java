@@ -1,6 +1,7 @@
 package org.example.controlador.dao.impl;
 
 import org.example.controlador.dao.ClienteDao;
+import org.example.controlador.dao.CocheDao;
 import org.example.modelo.Cliente;
 import org.example.modelo.Coche;
 
@@ -8,6 +9,11 @@ import java.sql.*;
 import static org.example.utils.DatabaseConf.*;
 
 public class JdbcClienteDao implements ClienteDao {
+    private CocheDao cocheDao;
+
+    public JdbcClienteDao() throws SQLException {
+        this.cocheDao = new JdbcCocheDao();
+    }
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
@@ -27,43 +33,25 @@ public class JdbcClienteDao implements ClienteDao {
         }
     }
 
-    @Override
     public Cliente findByDni(String dni) throws SQLException {
         String queryCliente = "SELECT * FROM cliente WHERE dni = ?";
-        String queryCoche = "SELECT * FROM coche WHERE propietario = ?";
         try (Connection conn = getConnection();
-             PreparedStatement stmtCliente = conn.prepareStatement(queryCliente);
-             PreparedStatement stmtCoche = conn.prepareStatement(queryCoche);
-        )
-        {
+             PreparedStatement stmtCliente = conn.prepareStatement(queryCliente)) {
             stmtCliente.setString(1, dni);
             try (ResultSet rs = stmtCliente.executeQuery()) {
                 if (rs.next()) {
-                    Cliente cliente =  new Cliente(
+                    Cliente cliente = new Cliente(
                             rs.getString("dni"),
                             rs.getString("nombre"),
                             rs.getString("apellidos"),
                             rs.getString("telefono")
                     );
-                    stmtCoche.setString(1, dni); // Usar el DNI del cliente como parámetro para la consulta de coches
-                    try (ResultSet rsCoche = stmtCoche.executeQuery()) {
-                        while (rsCoche.next()) {
-                            // Crear el objeto Coche y agregarlo a la lista de coches del cliente
-                            Coche coche = new Coche(
-                                    rsCoche.getString("matricula"),
-                                    rsCoche.getString("marca"),
-                                    rsCoche.getString("modelo"),
-                                    rsCoche.getDate("fecha"),
-                                    cliente
-                            );
-                            cliente.addCoche(coche); // Método que agrega el coche a la lista de coches del cliente
-                        }
-                    }
+                    cliente.setCoches(cocheDao.getCochesByPropietarioDni(dni));
                     return cliente;
                 }
-                return null;
             }
         }
+        return null;
     }
 
     @Override
