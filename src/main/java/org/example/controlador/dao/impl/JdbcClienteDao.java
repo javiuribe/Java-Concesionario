@@ -9,8 +9,6 @@ import static org.example.utils.DatabaseConf.*;
 
 public class JdbcClienteDao implements ClienteDao {
 
-
-
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
     }
