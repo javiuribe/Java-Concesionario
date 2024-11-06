@@ -67,7 +67,6 @@ public class Coche {
                 ", marca='" + marca + '\'' +
                 ", modelo='" + modelo + '\'' +
                 ", fecha=" + fecha +
-                ", propietario=" + propietario +
                 '}';
     }
 }

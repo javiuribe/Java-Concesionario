@@ -70,6 +70,7 @@ public class Cliente {
                 ", nombre='" + nombre + '\'' +
                 ", apellidos='" + apellidos + '\'' +
                 ", telefono='" + telefono + '\'' +
+                ", coches=" + coches +
                 '}';
     }
 }

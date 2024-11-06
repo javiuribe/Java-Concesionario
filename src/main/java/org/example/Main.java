@@ -16,9 +16,15 @@ public class Main {
         try {
             DatabaseConf.dropAndCreateTables();
             ControladorCliente controladorCliente = new ControladorCliente();
-            controladorCliente.registrarCliente(new Cliente("11111Z", "Ana", "Rodriguez", "+3411111"));
+            ControladorCoche controladorCoche = new ControladorCoche();
+            controladorCliente.registrarCliente(new Cliente("11111Z", "Maria", "Gomez", "+34123123123"));
             Cliente cliente = controladorCliente.buscarCliente("11111Z");
             System.out.println(cliente);
+            controladorCoche.agregarCoche(new Coche("9999DEF", "Opel",  "Corsa", new Date(), cliente));
+            controladorCoche.agregarCoche(new Coche("111ABC", "Opel",  "Corsa", new Date(), cliente));
+            cliente = controladorCliente.buscarCliente("11111Z");
+            System.out.println(cliente);
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
