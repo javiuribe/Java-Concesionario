@@ -9,27 +9,6 @@ import static org.example.utils.DatabaseConf.*;
 
 public class JdbcClienteDao implements ClienteDao {
 
-    public JdbcClienteDao() throws SQLException {
-        if (CREATE_TABLE) {
-            crearTablas();
-        }
-    }
-
-    public static void crearTablas() throws SQLException {
-        if (CREATE_TABLE) {
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS cliente (" +
-                    "dni VARCHAR(255) PRIMARY KEY," +
-                    "nombre VARCHAR(255) NOT NULL," +
-                    "apellidos VARCHAR(255) NOT NULL," +
-                    "telefono VARCHAR(255) NULL UNIQUE" +
-                    ");";
-            try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
-                 Statement stmt = conn.createStatement()) {
-                stmt.execute(createTableSQL);
-                System.out.println("Tabla 'Cliente' creadada Correctamente");
-            }
-        }
-    }
 
 
     public Connection getConnection() throws SQLException {

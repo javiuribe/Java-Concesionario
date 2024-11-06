@@ -10,33 +10,8 @@ import java.sql.*;
 
 public class JdbcCocheDao implements CocheDao {
 
-
-    public JdbcCocheDao() throws SQLException {
-        if (CREATE_TABLE) {
-            crearTablas();
-        }
-    }
-
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
-    }
-
-    public static void crearTablas() throws SQLException {
-        if (CREATE_TABLE) {
-            String createTableSQL = "CREATE TABLE IF NOT EXISTS coche (" +
-                    "matricula VARCHAR(255) PRIMARY KEY," +
-                    "marca VARCHAR(255) NOT NULL," +
-                    "modelo VARCHAR(255) NOT NULL," +
-                    "fecha VARCHAR(255) NOT NULL," +
-                    "propietario VARCHAR(255) NOT NULL," +
-                    "FOREIGN KEY (propietario) REFERENCES cliente(dni)" +
-                    ");";
-            try (Connection conn = DriverManager.getConnection(URL, USER, PASS);
-                 Statement stmt = conn.createStatement()) {
-                stmt.execute(createTableSQL);
-                System.out.println("Tabla 'Coche' creadada Correctamente");
-            }
-        }
     }
 
     @Override
