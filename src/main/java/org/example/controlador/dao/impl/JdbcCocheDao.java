@@ -12,10 +12,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcCocheDao implements CocheDao {
+    private static JdbcCocheDao instance;
     private ClienteDao clienteDao;
 
-    public JdbcCocheDao() throws SQLException {
-        this.clienteDao = new JdbcClienteDao();
+    private JdbcCocheDao() {
+    }
+
+    public static CocheDao getInstance() {
+        if (instance == null) {
+            instance = new JdbcCocheDao();
+            instance.clienteDao = JdbcClienteDao.getInstance();
+        }
+        return instance;
     }
 
 

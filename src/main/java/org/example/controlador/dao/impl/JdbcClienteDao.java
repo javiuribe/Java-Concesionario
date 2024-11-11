@@ -5,13 +5,23 @@ import org.example.controlador.dao.CocheDao;
 import org.example.modelo.Cliente;
 
 import java.sql.*;
+
 import static org.example.utils.DatabaseConf.*;
 
 public class JdbcClienteDao implements ClienteDao {
-    private CocheDao cocheDao;
+    public static JdbcClienteDao instance;
+    private static CocheDao cocheDao;
 
-    public JdbcClienteDao() throws SQLException {
-        this.cocheDao = new JdbcCocheDao();
+    private JdbcClienteDao() {
+    }
+
+    public static JdbcClienteDao getInstance() {
+        if (instance == null) {
+            instance = new JdbcClienteDao();
+            cocheDao = JdbcCocheDao.getInstance();
+        }
+        return instance;
+
     }
 
     public Connection getConnection() throws SQLException {

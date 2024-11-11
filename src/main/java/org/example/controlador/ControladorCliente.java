@@ -10,7 +10,7 @@ public class ControladorCliente {
     private ClienteDao clienteDao;
 
     public ControladorCliente() throws SQLException {
-        this.clienteDao = new JdbcClienteDao();
+        this.clienteDao = JdbcClienteDao.getInstance();
     }
 
     public void registrarCliente(Cliente cliente) throws SQLException {

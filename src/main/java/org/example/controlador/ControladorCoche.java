@@ -10,7 +10,7 @@ public class ControladorCoche {
     private CocheDao cocheDao;
 
     public ControladorCoche() throws SQLException {
-        this.cocheDao = new JdbcCocheDao();
+        this.cocheDao = JdbcCocheDao.getInstance();
     }
 
     public void agregarCoche(Coche coche) throws SQLException {
