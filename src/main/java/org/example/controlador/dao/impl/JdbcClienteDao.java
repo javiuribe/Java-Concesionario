@@ -3,26 +3,15 @@ package org.example.controlador.dao.impl;
 import org.example.controlador.dao.ClienteDao;
 import org.example.controlador.dao.CocheDao;
 import org.example.modelo.Cliente;
+import org.example.modelo.Coche;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.example.utils.DatabaseConf.*;
 
 public class JdbcClienteDao implements ClienteDao {
-    public static JdbcClienteDao instance;
-    private static CocheDao cocheDao;
-
-    private JdbcClienteDao() {
-    }
-
-    public static JdbcClienteDao getInstance() {
-        if (instance == null) {
-            instance = new JdbcClienteDao();
-            cocheDao = JdbcCocheDao.getInstance();
-        }
-        return instance;
-
-    }
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
@@ -43,24 +32,41 @@ public class JdbcClienteDao implements ClienteDao {
     }
 
     public Cliente findByDni(String dni) throws SQLException {
-        String queryCliente = "SELECT * FROM cliente WHERE dni = ?";
+        String queryCliente = "SELECT cliente.dni, cliente.nombre, cliente.apellidos, cliente.telefono," +
+                "coche.matricula, coche.marca, coche.modelo, coche.fecha " +
+                "FROM cliente " +
+                "LEFT JOIN coche ON cliente.dni = coche.propietario " +
+                "WHERE cliente.dni = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmtCliente = conn.prepareStatement(queryCliente)) {
             stmtCliente.setString(1, dni);
             try (ResultSet rs = stmtCliente.executeQuery()) {
-                if (rs.next()) {
-                    Cliente cliente = new Cliente(
-                            rs.getString("dni"),
-                            rs.getString("nombre"),
-                            rs.getString("apellidos"),
-                            rs.getString("telefono")
+                Cliente cliente = null;
+                List<Coche> coches = new ArrayList<>();
+                while (rs.next()) {
+                    if (cliente == null) {
+                        cliente = new Cliente(
+                                rs.getString("dni"),
+                                rs.getString("nombre"),
+                                rs.getString("apellidos"),
+                                rs.getString("telefono")
+                        );
+                    }
+                    Coche coche = new Coche(
+                            rs.getString("matricula"),
+                            rs.getString("marca"),
+                            rs.getString("modelo"),
+                            rs.getDate("fecha")
                     );
-                    cliente.setCoches(cocheDao.findByPropietario(dni));
+                    coches.add(coche);
+                    if (cliente != null) {
+                        cliente.setCoches(coches);
+                    }
                     return cliente;
                 }
+                return cliente;
             }
         }
-        return null;
     }
 
     @Override

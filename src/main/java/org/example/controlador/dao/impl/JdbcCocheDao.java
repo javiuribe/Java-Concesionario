@@ -13,19 +13,6 @@ import java.util.List;
 
 public class JdbcCocheDao implements CocheDao {
     private static JdbcCocheDao instance;
-    private ClienteDao clienteDao;
-
-    private JdbcCocheDao() {
-    }
-
-    public static CocheDao getInstance() {
-        if (instance == null) {
-            instance = new JdbcCocheDao();
-            instance.clienteDao = JdbcClienteDao.getInstance();
-        }
-        return instance;
-    }
-
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
@@ -47,23 +34,29 @@ public class JdbcCocheDao implements CocheDao {
 
     @Override
     public Coche findByMatricula(String matricula) throws SQLException {
-        String queryCoche = "SELECT * FROM coche WHERE matricula = ?";
-        String queryCliente = "SELECT * FROM cliente WHERE dni = ?";
+        String queryCoche = "SELECT cliente.dni, cliente.nombre, cliente.apellidos, cliente.telefono," +
+                "coche.matricula, coche.marca, coche.modelo, coche.fecha " +
+                "FROM cliente " +
+                "JOIN coche ON cliente.dni = coche.propietario " +
+                "WHERE cliente.dni = ?";
         try (Connection conn = getConnection();
-             PreparedStatement stmtCoche = conn.prepareStatement(queryCoche);
-             PreparedStatement stmtCliente = conn.prepareStatement(queryCliente)) {
+             PreparedStatement stmtCoche = conn.prepareStatement(queryCoche)){
             stmtCoche.setString(1, matricula);
-            try (ResultSet rsCoche = stmtCoche.executeQuery()) {
-                if (rsCoche.next()) {
+            try (ResultSet rs = stmtCoche.executeQuery()) {
+                if (rs.next()) {
                     Coche coche = new Coche(
-                            rsCoche.getString("matricula"),
-                            rsCoche.getString("marca"),
-                            rsCoche.getString("modelo"),
-                            rsCoche.getDate("fecha")
+                            rs.getString("matricula"),
+                            rs.getString("marca"),
+                            rs.getString("modelo"),
+                            rs.getDate("fecha")
                     );
-                    String dniPropietario = rsCoche.getString("propietario");
-                    Cliente propietario = clienteDao.findByDni(dniPropietario);
-                    coche.setPropietario(propietario);
+                    Cliente cliente = new Cliente(
+                            rs.getString("dni"),
+                            rs.getString("nombre"),
+                            rs.getString("apellidos"),
+                            rs.getString("telefono")
+                    );
+                    coche.setPropietario(cliente);
                     return coche;
                 }
             }
