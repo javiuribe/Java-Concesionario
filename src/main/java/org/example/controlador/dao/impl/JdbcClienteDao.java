@@ -45,10 +45,8 @@ public class JdbcClienteDao implements ClienteDao {
 
             ResultSet rs = stmtCliente.getGeneratedKeys();
             if (rs.next()) {
-                System.out.println("ID:"+rs.getInt(1));
+                cliente.setId(rs.getInt(1));
             }
-
-
         }
     }
 
