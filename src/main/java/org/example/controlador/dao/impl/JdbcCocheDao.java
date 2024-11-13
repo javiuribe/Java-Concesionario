@@ -26,7 +26,7 @@ public class JdbcCocheDao implements CocheDao {
             stmt.setString(2, coche.getMarca());
             stmt.setString(3, coche.getModelo());
             stmt.setDate(4, new java.sql.Date(coche.getFecha().getTime()));
-            stmt.setString(5, coche.getPropietario().getDni());
+            stmt.setInt(5, coche.getPropietario().getId());
             stmt.executeUpdate();
         }
     }
