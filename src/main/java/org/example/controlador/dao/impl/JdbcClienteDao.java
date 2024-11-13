@@ -29,6 +29,11 @@ public class JdbcClienteDao implements ClienteDao {
             stmtCliente.setString(3, cliente.getApellidos());
             stmtCliente.setString(4, cliente.getTelefono());
             stmtCliente.executeUpdate();
+            try(ResultSet rs = stmtCliente.getGeneratedKeys()){
+                if (rs.next()){
+                    cliente.setId(rs.getInt(1));
+                }
+            }
         }
     }
 
@@ -82,10 +87,9 @@ public class JdbcClienteDao implements ClienteDao {
                             rs.getDate("fecha")
                     );
                     coches.add(coche);
-                    if (cliente != null) {
-                        cliente.setCoches(coches);
-                    }
-                    return cliente;
+                }
+                if (cliente != null) {
+                    cliente.setCoches(coches);
                 }
                 return cliente;
             }
