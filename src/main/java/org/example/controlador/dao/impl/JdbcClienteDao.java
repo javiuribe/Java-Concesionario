@@ -22,7 +22,7 @@ public class JdbcClienteDao implements ClienteDao {
     public void save(Cliente cliente) throws SQLException {
         String queryCliente = "INSERT INTO cliente (dni, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
         try (Connection conn = getConnection();
-             PreparedStatement stmtCliente = conn.prepareStatement(queryCliente);
+             PreparedStatement stmtCliente = conn.prepareStatement(queryCliente, Statement.RETURN_GENERATED_KEYS);
         ) {
             stmtCliente.setString(1, cliente.getDni());
             stmtCliente.setString(2, cliente.getNombre());

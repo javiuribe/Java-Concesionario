@@ -21,10 +21,7 @@ public class Main {
             ControladorCoche controladorCoche = new ControladorCoche();
             Cliente cliente = new Cliente("11111Z", "Maria", "Gomez", "+34123123123");
             List<Coche> coches = new ArrayList<>();
-            coches.add(new Coche("1123HAR", "Ford", "Fiesta", new Date(), cliente));
-            coches.add(new Coche("999HAR", "Opel", "Corsa", new Date(), cliente));
-            cliente.setCoches(coches);
-            controladorCliente.guardarClienteConCoches(cliente);
+            controladorCliente.registrarCliente(cliente);
             System.out.println(cliente);
 
         } catch (SQLException e) {
