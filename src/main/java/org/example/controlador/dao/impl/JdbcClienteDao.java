@@ -79,6 +79,7 @@ public class JdbcClienteDao implements ClienteDao {
                                 rs.getString("apellidos"),
                                 rs.getString("telefono")
                         );
+                        cliente.setId(rs.getInt("id"));
                     }
                     Coche coche = new Coche(
                             rs.getString("matricula"),
