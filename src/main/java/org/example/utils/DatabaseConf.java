@@ -22,8 +22,8 @@ public class DatabaseConf {
             "    marca VARCHAR(255) NOT NULL," +
             "    modelo VARCHAR(255) NOT NULL," +
             "    fecha DATE NULL," +
-            "    propietario VARCHAR(255)," +
-            "    FOREIGN KEY(propietario) REFERENCES CLIENTE(dni) ON DELETE NO ACTION ON UPDATE CASCADE" +
+            "    propietario INT" +
+            "    FOREIGN KEY(propietario) REFERENCES CLIENTE(id) ON DELETE NO ACTION ON UPDATE CASCADE" +
             ");";
     public static final String DROP_TABLE_CLIENTE = "DROP TABLE IF EXISTS CLIENTE";
     public static final String DROP_TABLE_COCHE = "DROP TABLE IF EXISTS COCHE";
