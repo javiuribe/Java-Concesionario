@@ -12,6 +12,7 @@ import java.util.List;
 import static org.example.utils.DatabaseConf.*;
 
 public class JdbcClienteDao implements ClienteDao {
+    private static JdbcCocheDao cocheDao = new JdbcCocheDao();
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);
@@ -46,6 +47,9 @@ public class JdbcClienteDao implements ClienteDao {
             ResultSet rs = stmtCliente.getGeneratedKeys();
             if (rs.next()) {
                 cliente.setId(rs.getInt(1));
+            }
+            for(Coche coche: cliente.getCoches()) {
+                cocheDao.save(coche);
             }
         }
     }
