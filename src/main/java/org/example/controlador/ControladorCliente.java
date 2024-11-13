@@ -21,6 +21,10 @@ public class ControladorCliente {
         clienteDao.save(cliente);
     }
 
+    public void guardarClienteConCoches(Cliente cliente) throws SQLException {
+        clienteDao.saveWithCars(cliente);
+    }
+
     public Cliente buscarCliente(String dni) throws SQLException {
         return clienteDao.findByDni(dni);
     }

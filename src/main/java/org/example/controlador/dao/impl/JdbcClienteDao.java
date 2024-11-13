@@ -31,6 +31,27 @@ public class JdbcClienteDao implements ClienteDao {
         }
     }
 
+    @Override
+    public void saveWithCars(Cliente cliente) throws SQLException {
+        String queryCliente = "INSERT INTO cliente (dni, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
+        try (Connection conn = getConnection();
+             PreparedStatement stmtCliente = conn.prepareStatement(queryCliente, Statement.RETURN_GENERATED_KEYS);
+        ) {
+            stmtCliente.setString(1, cliente.getDni());
+            stmtCliente.setString(2, cliente.getNombre());
+            stmtCliente.setString(3, cliente.getApellidos());
+            stmtCliente.setString(4, cliente.getTelefono());
+            stmtCliente.executeUpdate();
+
+            ResultSet rs = stmtCliente.getGeneratedKeys();
+            if (rs.next()) {
+                System.out.println("ID:"+rs.getInt(1));
+            }
+
+
+        }
+    }
+
     public Cliente findByDni(String dni) throws SQLException {
         String queryCliente = "SELECT cliente.dni, cliente.nombre, cliente.apellidos, cliente.telefono," +
                 "coche.matricula, coche.marca, coche.modelo, coche.fecha " +

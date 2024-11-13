@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class JdbcCocheDao implements CocheDao {
-    private static JdbcCocheDao instance;
 
     public Connection getConnection() throws SQLException {
         return DriverManager.getConnection(URL, USER, PASS);

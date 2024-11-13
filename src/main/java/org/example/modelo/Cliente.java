@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Cliente {
-
+    private int id;
     private String dni;
     private String nombre;
     private String apellidos;
@@ -21,6 +21,14 @@ public class Cliente {
 
     public List<Coche> getCoches() {
         return coches;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public void setCoches(List<Coche> coches) {
@@ -66,7 +74,8 @@ public class Cliente {
     @Override
     public String toString() {
         return "Cliente{" +
-                "dni='" + dni + '\'' +
+                "id=" + id +
+                ", dni='" + dni + '\'' +
                 ", nombre='" + nombre + '\'' +
                 ", apellidos='" + apellidos + '\'' +
                 ", telefono='" + telefono + '\'' +

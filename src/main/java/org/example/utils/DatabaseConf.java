@@ -11,7 +11,8 @@ public class DatabaseConf {
     public static final String USER = "root";
     public static final String PASS = "admin";
     public static final String CREATE_TABLE_CLIENTE ="CREATE TABLE IF NOT EXISTS CLIENTE(" +
-            "    dni VARCHAR(255) PRIMARY KEY," +
+            "    id int PRIMARY KEY AUTO_INCREMENT," +
+            "    dni VARCHAR(255) UNIQUE NOT NULL," +
             "    nombre VARCHAR(255) not null," +
             "    apellidos VARCHAR(255) not null," +
             "    telefono VARCHAR(255) NULL UNIQUE" +
