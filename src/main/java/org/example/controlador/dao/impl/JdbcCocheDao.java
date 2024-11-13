@@ -36,8 +36,8 @@ public class JdbcCocheDao implements CocheDao {
     public Coche findByMatricula(String matricula) throws SQLException {
         String queryCoche = "SELECT cliente.dni, cliente.nombre, cliente.apellidos, cliente.telefono," +
                 "coche.matricula, coche.marca, coche.modelo, coche.fecha " +
-                "FROM cliente " +
-                "JOIN coche ON cliente.dni = coche.propietario " +
+                "FROM coche " +
+                "LEFT JOIN cliente ON cliente.dni = coche.propietario " +
                 "WHERE cliente.dni = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmtCoche = conn.prepareStatement(queryCoche)){
