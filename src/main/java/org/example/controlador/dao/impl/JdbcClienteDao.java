@@ -21,40 +21,46 @@ public class JdbcClienteDao implements ClienteDao {
     @Override
     public void save(Cliente cliente) throws SQLException {
         String queryCliente = "INSERT INTO cliente (dni, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement stmtCliente = conn.prepareStatement(queryCliente, Statement.RETURN_GENERATED_KEYS);
-        ) {
+        try (Connection conn = getConnection(); PreparedStatement stmtCliente = conn.prepareStatement(queryCliente, Statement.RETURN_GENERATED_KEYS)) {
             stmtCliente.setString(1, cliente.getDni());
             stmtCliente.setString(2, cliente.getNombre());
             stmtCliente.setString(3, cliente.getApellidos());
             stmtCliente.setString(4, cliente.getTelefono());
             stmtCliente.executeUpdate();
-            try(ResultSet rs = stmtCliente.getGeneratedKeys()){
-                if (rs.next()){
+            try (ResultSet rs = stmtCliente.getGeneratedKeys()) {
+                if (rs.next()) {
                     cliente.setId(rs.getInt(1));
                 }
             }
         }
     }
 
+
     @Override
     public void saveWithCars(Cliente cliente) throws SQLException {
         String queryCliente = "INSERT INTO cliente (dni, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
-        try (Connection conn = getConnection();
-             PreparedStatement stmtCliente = conn.prepareStatement(queryCliente, Statement.RETURN_GENERATED_KEYS);
-        ) {
-            stmtCliente.setString(1, cliente.getDni());
-            stmtCliente.setString(2, cliente.getNombre());
-            stmtCliente.setString(3, cliente.getApellidos());
-            stmtCliente.setString(4, cliente.getTelefono());
-            stmtCliente.executeUpdate();
+        try (Connection conn = getConnection()) {
+            conn.setAutoCommit(false);
+            try (PreparedStatement stmtCliente = conn.prepareStatement(queryCliente, Statement.RETURN_GENERATED_KEYS)) {
+                stmtCliente.setString(1, cliente.getDni());
+                stmtCliente.setString(2, cliente.getNombre());
+                stmtCliente.setString(3, cliente.getApellidos());
+                stmtCliente.setString(4, cliente.getTelefono());
+                stmtCliente.executeUpdate();
 
-            ResultSet rs = stmtCliente.getGeneratedKeys();
-            if (rs.next()) {
-                cliente.setId(rs.getInt(1));
-            }
-            for(Coche coche: cliente.getCoches()) {
-                cocheDao.save(coche);
+                ResultSet rs = stmtCliente.getGeneratedKeys();
+                if (rs.next()) {
+                    cliente.setId(rs.getInt(1));
+                }
+                for (Coche coche : cliente.getCoches()) {
+                    System.out.println("Propietario:" + coche.getPropietario());
+                    cocheDao.save(coche);
+                }
+                conn.commit();
+            } catch (SQLException e) {
+                if (conn != null) {
+                    conn.rollback();
+                }
             }
         }
     }
