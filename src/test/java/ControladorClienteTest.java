@@ -46,8 +46,8 @@ public class ControladorClienteTest {
         cliente.setCoches(coches);
         controladorCliente.guardarClienteConCoches(cliente);
         assertEquals(1, cliente.getId());
-        //Cliente loggedInCliente = controladorCliente.buscarCliente(1);
-       // assertEquals(2, loggedInCliente.getCoches().size());
+        Cliente loggedInCliente = controladorCliente.buscarCliente(1);
+        assertEquals(2, loggedInCliente.getCoches().size());
     }
 
     @Test

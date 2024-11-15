@@ -4,6 +4,7 @@ import org.example.controlador.dao.ClienteDao;
 import org.example.controlador.dao.CocheDao;
 import org.example.modelo.Cliente;
 import org.example.modelo.Coche;
+import org.example.utils.DatabaseConf;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class JdbcClienteDao implements ClienteDao {
     private static JdbcCocheDao cocheDao = new JdbcCocheDao();
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASS);
+       return DriverManager.getConnection(URL, USER, PASS);
     }
 
     @Override
@@ -40,7 +41,7 @@ public class JdbcClienteDao implements ClienteDao {
     public void saveWithCars(Cliente cliente) throws SQLException {
         String queryCliente = "INSERT INTO cliente (dni, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
         try (Connection conn = getConnection()) {
-            //conn.setAutoCommit(false);
+            conn.setAutoCommit(false);
             try (PreparedStatement stmtCliente = conn.prepareStatement(queryCliente, Statement.RETURN_GENERATED_KEYS)) {
                 stmtCliente.setString(1, cliente.getDni());
                 stmtCliente.setString(2, cliente.getNombre());
@@ -54,11 +55,9 @@ public class JdbcClienteDao implements ClienteDao {
                 }
                 System.out.println("Size:"+cliente.getCoches().size());
                 for (Coche coche : cliente.getCoches()) {
-                    System.out.println("Coche:" + coche);
-                    cocheDao.save(coche);
+                    cocheDao.save(coche, conn);
                 }
-                System.out.println("fin bucle");
-               // conn.commit();
+                conn.commit();
             } catch (SQLException e) {
                 if (conn != null) {
                     conn.rollback();
@@ -71,7 +70,7 @@ public class JdbcClienteDao implements ClienteDao {
         String queryCliente = "SELECT cliente.id, cliente.dni, cliente.nombre, cliente.apellidos, cliente.telefono," +
                 "coche.matricula, coche.marca, coche.modelo, coche.fecha " +
                 "FROM cliente " +
-                "LEFT JOIN coche ON cliente.dni = coche.propietario " +
+                "LEFT JOIN coche ON cliente.id = coche.propietario " +
                 "WHERE cliente.id = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmtCliente = conn.prepareStatement(queryCliente)) {

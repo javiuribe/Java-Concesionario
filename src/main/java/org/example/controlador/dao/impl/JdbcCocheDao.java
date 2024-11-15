@@ -4,6 +4,7 @@ import org.example.controlador.dao.ClienteDao;
 import org.example.controlador.dao.CocheDao;
 import org.example.modelo.Cliente;
 import org.example.modelo.Coche;
+import org.example.utils.DatabaseConf;
 
 import static org.example.utils.DatabaseConf.*;
 
@@ -19,19 +20,21 @@ public class JdbcCocheDao implements CocheDao {
 
     @Override
     public void save(Coche coche) throws SQLException {
-        System.out.println("Guardar coche:"+coche);
+        try (Connection conn = getConnection()) {
+            save(coche, conn);
+        }
+    }
+
+    public void save(Coche coche, Connection conn) throws SQLException{
         String queryCoche = "INSERT INTO coche (matricula, marca, modelo, fecha, propietario) VALUES (?,?,?,?,?)";
-        try (Connection conn = getConnection();
-             PreparedStatement stmt = conn.prepareStatement(queryCoche)) {
+        try (PreparedStatement stmt = conn.prepareStatement(queryCoche)) {
             stmt.setString(1, coche.getMatricula());
             stmt.setString(2, coche.getMarca());
             stmt.setString(3, coche.getModelo());
             stmt.setDate(4, new java.sql.Date(coche.getFecha().getTime()));
-            System.out.println("Guardar propietario del coche:"+coche.getPropietario().getId());
             stmt.setInt(5, coche.getPropietario().getId());
             stmt.executeUpdate();
         }
-        System.out.println("Coche guardado:"+coche);
     }
 
     @Override
