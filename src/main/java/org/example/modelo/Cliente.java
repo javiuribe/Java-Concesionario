@@ -2,6 +2,7 @@ package org.example.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Cliente {
     private int id;
@@ -81,5 +82,17 @@ public class Cliente {
                 ", telefono='" + telefono + '\'' +
                 ", coches=" + coches +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Cliente cliente)) return false;
+        return id == cliente.id && Objects.equals(dni, cliente.dni) && Objects.equals(nombre, cliente.nombre) && Objects.equals(apellidos, cliente.apellidos) && Objects.equals(telefono, cliente.telefono) && Objects.equals(coches, cliente.coches);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, dni, nombre, apellidos, telefono, coches);
     }
 }

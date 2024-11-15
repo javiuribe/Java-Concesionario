@@ -19,6 +19,7 @@ public class JdbcCocheDao implements CocheDao {
 
     @Override
     public void save(Coche coche) throws SQLException {
+        System.out.println("Guardar coche:"+coche);
         String queryCoche = "INSERT INTO coche (matricula, marca, modelo, fecha, propietario) VALUES (?,?,?,?,?)";
         try (Connection conn = getConnection();
              PreparedStatement stmt = conn.prepareStatement(queryCoche)) {
@@ -26,9 +27,11 @@ public class JdbcCocheDao implements CocheDao {
             stmt.setString(2, coche.getMarca());
             stmt.setString(3, coche.getModelo());
             stmt.setDate(4, new java.sql.Date(coche.getFecha().getTime()));
+            System.out.println("Guardar propietario del coche:"+coche.getPropietario().getId());
             stmt.setInt(5, coche.getPropietario().getId());
             stmt.executeUpdate();
         }
+        System.out.println("Coche guardado:"+coche);
     }
 
     @Override

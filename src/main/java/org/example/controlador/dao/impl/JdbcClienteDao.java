@@ -40,7 +40,7 @@ public class JdbcClienteDao implements ClienteDao {
     public void saveWithCars(Cliente cliente) throws SQLException {
         String queryCliente = "INSERT INTO cliente (dni, nombre, apellidos, telefono) VALUES (?, ?, ?, ?)";
         try (Connection conn = getConnection()) {
-            conn.setAutoCommit(false);
+            //conn.setAutoCommit(false);
             try (PreparedStatement stmtCliente = conn.prepareStatement(queryCliente, Statement.RETURN_GENERATED_KEYS)) {
                 stmtCliente.setString(1, cliente.getDni());
                 stmtCliente.setString(2, cliente.getNombre());
@@ -52,11 +52,13 @@ public class JdbcClienteDao implements ClienteDao {
                 if (rs.next()) {
                     cliente.setId(rs.getInt(1));
                 }
+                System.out.println("Size:"+cliente.getCoches().size());
                 for (Coche coche : cliente.getCoches()) {
-                    System.out.println("Propietario:" + coche.getPropietario());
+                    System.out.println("Coche:" + coche);
                     cocheDao.save(coche);
                 }
-                conn.commit();
+                System.out.println("fin bucle");
+               // conn.commit();
             } catch (SQLException e) {
                 if (conn != null) {
                     conn.rollback();
@@ -65,15 +67,15 @@ public class JdbcClienteDao implements ClienteDao {
         }
     }
 
-    public Cliente findByDni(String dni) throws SQLException {
-        String queryCliente = "SELECT cliente.dni, cliente.nombre, cliente.apellidos, cliente.telefono," +
+    public Cliente findById(int id) throws SQLException {
+        String queryCliente = "SELECT cliente.id, cliente.dni, cliente.nombre, cliente.apellidos, cliente.telefono," +
                 "coche.matricula, coche.marca, coche.modelo, coche.fecha " +
                 "FROM cliente " +
                 "LEFT JOIN coche ON cliente.dni = coche.propietario " +
-                "WHERE cliente.dni = ?";
+                "WHERE cliente.id = ?";
         try (Connection conn = getConnection();
              PreparedStatement stmtCliente = conn.prepareStatement(queryCliente)) {
-            stmtCliente.setString(1, dni);
+            stmtCliente.setInt(1, id);
             try (ResultSet rs = stmtCliente.executeQuery()) {
                 Cliente cliente = null;
                 List<Coche> coches = new ArrayList<>();
@@ -87,13 +89,15 @@ public class JdbcClienteDao implements ClienteDao {
                         );
                         cliente.setId(rs.getInt("id"));
                     }
-                    Coche coche = new Coche(
-                            rs.getString("matricula"),
-                            rs.getString("marca"),
-                            rs.getString("modelo"),
-                            rs.getDate("fecha")
-                    );
-                    coches.add(coche);
+                    if (rs.getString("matricula") != null) {
+                        Coche coche = new Coche(
+                                rs.getString("matricula"),
+                                rs.getString("marca"),
+                                rs.getString("modelo"),
+                                rs.getDate("fecha")
+                        );
+                        coches.add(coche);
+                    }
                 }
                 if (cliente != null) {
                     cliente.setCoches(coches);

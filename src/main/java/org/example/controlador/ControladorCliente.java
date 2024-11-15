@@ -14,10 +14,7 @@ public class ControladorCliente {
     }
 
     public void registrarCliente(Cliente cliente) throws SQLException {
-        Cliente clienteEncontrado = buscarCliente(cliente.getDni());
-        if (clienteEncontrado != null) {
-            throw new IllegalArgumentException("El cliente con DNI:" + clienteEncontrado.getDni() + " ya existe");
-        }
+
         clienteDao.save(cliente);
     }
 
@@ -25,8 +22,8 @@ public class ControladorCliente {
         clienteDao.saveWithCars(cliente);
     }
 
-    public Cliente buscarCliente(String dni) throws SQLException {
-        return clienteDao.findByDni(dni);
+    public Cliente buscarCliente(int id) throws SQLException {
+        return clienteDao.findById(id);
     }
 
     public void updateCliente(Cliente cliente) throws SQLException {
