@@ -63,5 +63,36 @@ public class ControladorClienteTest {
         assertEquals(cliente, loggedInCliente);
     }
 
+    @Test
+    void testBuscarClienteIncorrecto() throws SQLException {
+        String dni = "12345678A";
+        String nombre = "Juan";
+        String apellido = "Pérez";
+        String telefono = "123456789";
+        Cliente cliente = new Cliente(dni, nombre, apellido, telefono);
+        controladorCliente.registrarCliente(cliente);
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            controladorCliente.buscarCliente(2);
+        });
+        assertEquals("No se encontró el cliente con el id:2", exception.getMessage());
+    }
+
+    @Test
+    void testActualizarCliente() throws SQLException {
+        String dni = "12345678A";
+        String nombre = "Juan";
+        String apellido = "Pérez";
+        String telefono = "123456789";
+        Cliente cliente = new Cliente(dni, nombre, apellido, telefono);
+        controladorCliente.registrarCliente(cliente);
+        Cliente clienteRegistrado = controladorCliente.buscarCliente(cliente.getId());
+        String nuevoNombre = "Carlos";
+        String nuevoTelefono = "987654321";
+        clienteRegistrado.setNombre(nuevoNombre);
+        clienteRegistrado.setTelefono(nuevoTelefono);
+        controladorCliente.actualizarCliente(clienteRegistrado);
+        assertEquals(clienteRegistrado, controladorCliente.buscarCliente(cliente.getId()));
+    }
+
 
 }

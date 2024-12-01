@@ -23,7 +23,11 @@ public class ControladorCliente {
     }
 
     public Cliente buscarCliente(int id) throws SQLException {
-        return clienteDao.findById(id);
+        Cliente cliente =  clienteDao.findById(id);
+        if (cliente == null){
+            throw new IllegalArgumentException("No se encontró el cliente con el id:" + id);
+        }
+        return cliente;
     }
 
     public void updateCliente(Cliente cliente) throws SQLException {
@@ -32,5 +36,9 @@ public class ControladorCliente {
 
     public void deleteCliente(Cliente cliente) throws SQLException {
         clienteDao.delete(cliente);
+    }
+
+    public void actualizarCliente(Cliente cliente) throws SQLException {
+        clienteDao.update(cliente);
     }
 }

@@ -15,7 +15,6 @@ public class JpaClienteDao implements ClienteDao {
         this.entityManagerFactory = Persistence.createEntityManagerFactory("default");
     }
 
-    @Transactional
     @Override
     public void save(Cliente cliente) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -28,12 +27,11 @@ public class JpaClienteDao implements ClienteDao {
     @Override
     public Cliente findById(int id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        Cliente cliente =  entityManager.find(Cliente.class, id);
+        Cliente cliente = entityManager.find(Cliente.class, id);
         entityManager.close();
         return cliente;
     }
 
-    @Transactional
     @Override
     public void update(Cliente cliente) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -43,7 +41,6 @@ public class JpaClienteDao implements ClienteDao {
         entityManager.close();
     }
 
-    @Transactional
     @Override
     public void delete(Cliente cliente) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
