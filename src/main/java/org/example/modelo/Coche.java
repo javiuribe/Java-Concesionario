@@ -1,13 +1,23 @@
 package org.example.modelo;
 
-import java.util.Date;
+import jakarta.persistence.*;
 
+import java.util.Date;
+import java.util.Objects;
+
+@Entity
 public class Coche {
+    @Id
+    @GeneratedValue
+    private int id;
     private String matricula;
     private String marca;
     private String modelo;
+    @Temporal(TemporalType.DATE)
     private Date fecha;
+    @ManyToOne(cascade = CascadeType.PERSIST)
     private Cliente propietario;
+
 
     public Coche(String matricula, String marca, String modelo, Date fecha) {
         this.matricula = matricula;
@@ -18,6 +28,10 @@ public class Coche {
     public Coche(String matricula, String marca, String modelo, Date fecha, Cliente propietario) {
         this( matricula, marca, modelo, fecha);
         this.propietario = propietario;
+    }
+
+    public Coche() {
+
     }
 
     public String getMatricula() {
@@ -63,10 +77,31 @@ public class Coche {
     @Override
     public String toString() {
         return "Coche{" +
-                "matricula='" + matricula + '\'' +
+                "id=" + id +
+                ", matricula='" + matricula + '\'' +
                 ", marca='" + marca + '\'' +
                 ", modelo='" + modelo + '\'' +
                 ", fecha=" + fecha +
                 '}';
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Coche coche)) return false;
+        return id == coche.id && Objects.equals(matricula, coche.matricula) && Objects.equals(marca, coche.marca) && Objects.equals(modelo, coche.modelo) && Objects.equals(fecha, coche.fecha);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, matricula, marca, modelo, fecha, propietario);
     }
 }

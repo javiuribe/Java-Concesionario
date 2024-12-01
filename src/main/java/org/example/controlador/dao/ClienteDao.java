@@ -10,5 +10,4 @@ public interface ClienteDao {
     Cliente findById(int id) throws SQLException;
     void update(Cliente cliente) throws SQLException;
     void delete(Cliente cliente) throws SQLException;
-    void saveWithCars(Cliente cliente) throws SQLException;
 }

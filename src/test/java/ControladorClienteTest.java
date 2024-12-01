@@ -2,6 +2,7 @@ import org.example.controlador.ControladorCliente;
 import org.example.modelo.Cliente;
 import org.example.modelo.Coche;
 import org.example.utils.DatabaseConf;
+import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +19,7 @@ public class ControladorClienteTest {
 
     @BeforeEach
     void setUp() throws SQLException {
-        DatabaseConf.dropAndCreateTables();
+        //DatabaseConf.dropAndCreateTables();
         controladorCliente = new ControladorCliente();
     }
 
@@ -31,6 +32,7 @@ public class ControladorClienteTest {
         Cliente cliente = new Cliente(dni, nombre, apellido, telefono);
         controladorCliente.registrarCliente(cliente);
         assertEquals(1, cliente.getId());
+        assertEquals(cliente, controladorCliente.buscarCliente(1));
     }
 
     @Test
@@ -46,8 +48,7 @@ public class ControladorClienteTest {
         cliente.setCoches(coches);
         controladorCliente.guardarClienteConCoches(cliente);
         assertEquals(1, cliente.getId());
-        Cliente loggedInCliente = controladorCliente.buscarCliente(1);
-        assertEquals(2, loggedInCliente.getCoches().size());
+        assertEquals(cliente, controladorCliente.buscarCliente(1));
     }
 
     @Test

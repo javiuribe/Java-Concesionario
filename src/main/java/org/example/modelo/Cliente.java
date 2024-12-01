@@ -1,16 +1,22 @@
 package org.example.modelo;
 
+import jakarta.persistence.*;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+@Entity
 public class Cliente {
+    @Id
+    @GeneratedValue
     private int id;
     private String dni;
     private String nombre;
     private String apellidos;
     private String telefono;
-    private List<Coche> coches;
+    @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    private List<Coche> coches = new ArrayList<>();
 
     public Cliente(String dni, String nombre,String apellidos, String telefono) {
         this.dni = dni;
@@ -18,6 +24,9 @@ public class Cliente {
         this.apellidos = apellidos;
         this.telefono = telefono;
         this.coches = new ArrayList<>();
+    }
+
+    public Cliente() {
     }
 
     public List<Coche> getCoches() {
@@ -69,7 +78,13 @@ public class Cliente {
     }
 
     public void addCoche(Coche coche) {
+        coche.setPropietario(this);
         coches.add(coche);
+    }
+
+    public void removeCoche(Coche coche){
+        coche.setPropietario(null);
+        this.coches.remove(coche);
     }
 
     @Override
@@ -88,7 +103,7 @@ public class Cliente {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Cliente cliente)) return false;
-        return id == cliente.id && Objects.equals(dni, cliente.dni) && Objects.equals(nombre, cliente.nombre) && Objects.equals(apellidos, cliente.apellidos) && Objects.equals(telefono, cliente.telefono) && Objects.equals(coches, cliente.coches);
+        return id == cliente.id && Objects.equals(dni, cliente.dni) && Objects.equals(nombre, cliente.nombre) && Objects.equals(apellidos, cliente.apellidos) && Objects.equals(telefono, cliente.telefono) && coches.size() == cliente.coches.size();
     }
 
     @Override
