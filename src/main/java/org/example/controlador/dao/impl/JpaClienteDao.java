@@ -7,6 +7,7 @@ import jakarta.persistence.Persistence;
 import jakarta.transaction.Transactional;
 import org.example.controlador.dao.ClienteDao;
 import org.example.modelo.Cliente;
+import org.hibernate.Hibernate;
 
 public class JpaClienteDao implements ClienteDao {
     private final EntityManagerFactory entityManagerFactory;
@@ -28,6 +29,9 @@ public class JpaClienteDao implements ClienteDao {
     public Cliente findById(int id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Cliente cliente = entityManager.find(Cliente.class, id);
+        if (cliente != null) {
+            Hibernate.initialize(cliente.getCoches());
+        }
         entityManager.close();
         return cliente;
     }

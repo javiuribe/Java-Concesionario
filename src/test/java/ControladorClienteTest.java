@@ -1,8 +1,6 @@
 import org.example.controlador.ControladorCliente;
 import org.example.modelo.Cliente;
 import org.example.modelo.Coche;
-import org.example.utils.DatabaseConf;
-import org.hibernate.Hibernate;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,14 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
 
 public class ControladorClienteTest {
     private ControladorCliente controladorCliente;
 
     @BeforeEach
     void setUp() throws SQLException {
-        //DatabaseConf.dropAndCreateTables();
         controladorCliente = new ControladorCliente();
     }
 
@@ -48,7 +44,9 @@ public class ControladorClienteTest {
         cliente.setCoches(coches);
         controladorCliente.guardarClienteConCoches(cliente);
         assertEquals(1, cliente.getId());
-        assertEquals(cliente, controladorCliente.buscarCliente(1));
+        Cliente clienteEncontrado = controladorCliente.buscarCliente(1);
+        System.out.println("Cliente encontrado: " + clienteEncontrado.getCoches());
+        assertEquals(cliente, clienteEncontrado);
     }
 
     @Test

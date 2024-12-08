@@ -9,13 +9,13 @@ import java.util.Objects;
 @Entity
 public class Cliente {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String dni;
     private String nombre;
     private String apellidos;
     private String telefono;
-    @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     private List<Coche> coches = new ArrayList<>();
 
     public Cliente(String dni, String nombre,String apellidos, String telefono) {
