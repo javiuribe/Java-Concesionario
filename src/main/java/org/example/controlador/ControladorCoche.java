@@ -1,7 +1,7 @@
 package org.example.controlador;
 
 import org.example.controlador.dao.CocheDao;
-import org.example.controlador.dao.impl.JdbcCocheDao;
+import org.example.controlador.dao.impl.JpaCocheDao;
 import org.example.modelo.Coche;
 
 import java.sql.SQLException;
@@ -9,8 +9,8 @@ import java.sql.SQLException;
 public class ControladorCoche {
     private CocheDao cocheDao;
 
-    public ControladorCoche() throws SQLException {
-        this.cocheDao = new JdbcCocheDao();
+    public ControladorCoche() {
+        this.cocheDao = new JpaCocheDao();
     }
 
     public void agregarCoche(Coche coche) throws SQLException {
@@ -21,15 +21,15 @@ public class ControladorCoche {
         cocheDao.save(coche);
     }
 
-    public Coche leerCoche(String dni) throws SQLException {
-        return cocheDao.findByMatricula(dni);
+    public Coche buscarPorMatricula(String matricula) throws SQLException {
+        return cocheDao.findByMatricula(matricula);
     }
 
-    public void updateCoche(Coche coche) throws SQLException {
+    public void actualizarCoche(Coche coche) throws SQLException {
         cocheDao.update(coche);
     }
 
-    public void deleteCoche(Coche coche) throws SQLException {
+    public void eliminarCoche(Coche coche) throws SQLException {
         cocheDao.delete(coche);
     }
 

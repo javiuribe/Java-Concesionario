@@ -1,6 +1,7 @@
 import org.example.controlador.ControladorCliente;
 import org.example.modelo.Cliente;
 import org.example.modelo.Coche;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

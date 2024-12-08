@@ -8,7 +8,7 @@ import java.util.Objects;
 @Entity
 public class Coche {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
     private String matricula;
     private String marca;
