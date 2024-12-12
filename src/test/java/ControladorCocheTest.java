@@ -21,7 +21,7 @@ class ControladorCocheTest {
     }
 
     @Test
-    void agregarCoche() throws SQLException {
+    void guardarCoche() throws SQLException {
         String dni = "12345678A";
         String nombre = "Juan";
         String apellido = "Pérez";
@@ -30,8 +30,8 @@ class ControladorCocheTest {
         controladorCliente.registrarCliente(cliente);
         Coche coche1 = new Coche("1123HAR", "Ford", "Fiesta", new Date(), cliente);
         Coche coche2 = new Coche("999HAR", "Opel", "Corsa", new Date(), cliente);
-        controladorCoche.agregarCoche(coche1);
-        controladorCoche.agregarCoche(coche2);
+        controladorCoche.guardarCoche(coche1);
+        controladorCoche.guardarCoche(coche2);
 
     }
 
@@ -43,7 +43,15 @@ class ControladorCocheTest {
         String telefono = "123456789";
         Cliente cliente = new Cliente(dni, nombre, apellido, telefono);
         controladorCliente.registrarCliente(cliente);
-        Coche coche = controladorCoche.buscarPorMatricula(dni);
+        String matricula = "1123HAR";
+        String marca = "Toyota";
+        String modelo = "Corolla";
+        Coche coche = new Coche(matricula, marca, modelo, new Date());
+        coche.setPropietario(cliente);
+        controladorCoche.guardarCoche(coche);
+        coche = controladorCoche.buscarPorMatricula(matricula);
+        System.out.println(coche);
+        System.out.println(coche.getPropietario());
     }
 
     @Test
@@ -62,7 +70,7 @@ class ControladorCocheTest {
         Coche coche = new Coche("1123HAR", "Ford", "Fiesta", new Date(), cliente);
 
         // Registrar el coche en la base de datos
-        controladorCoche.agregarCoche(coche);
+        controladorCoche.guardarCoche(coche);
 
         // Verificar que el coche se guardó correctamente
         Coche cocheGuardado = controladorCoche.buscarPorMatricula("1123HAR");
@@ -94,8 +102,8 @@ class ControladorCocheTest {
     void borrarCoche() throws SQLException {
         Coche coche1 = new Coche("1123HAR", "Ford", "Focus", new Date());
         Coche coche2 = new Coche("999HAR", "Opel", "Moka", new Date());
-        controladorCoche.agregarCoche(coche1);
-        controladorCoche.agregarCoche(coche2);
+        controladorCoche.guardarCoche(coche1);
+        controladorCoche.guardarCoche(coche2);
         controladorCoche.eliminarCoche(coche1);
     }
 
@@ -109,8 +117,8 @@ class ControladorCocheTest {
         controladorCliente.registrarCliente(cliente);
         Coche coche1 = new Coche("1123HAR", "Ford", "Fiesta", new Date(), cliente);
         Coche coche2 = new Coche("999HAR", "Opel", "Corsa", new Date(), cliente);
-        controladorCoche.agregarCoche(coche1);
-        controladorCoche.agregarCoche(coche2);
+        controladorCoche.guardarCoche(coche1);
+        controladorCoche.guardarCoche(coche2);
         controladorCoche.eliminarCoche(coche1);
     }
 

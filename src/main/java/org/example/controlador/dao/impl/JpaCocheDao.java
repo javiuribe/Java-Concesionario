@@ -8,7 +8,9 @@ import org.example.modelo.Coche;
 
 import java.sql.SQLException;
 import java.util.List;
+
 import jakarta.persistence.EntityManager;
+import org.hibernate.Hibernate;
 
 public class JpaCocheDao implements CocheDao {
     private final EntityManagerFactory entityManagerFactory;
@@ -29,6 +31,7 @@ public class JpaCocheDao implements CocheDao {
         entityManager.close();
     }
 
+
     @Override
     public Coche findByMatricula(String matricula) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
@@ -38,6 +41,9 @@ public class JpaCocheDao implements CocheDao {
                             "SELECT c FROM Coche c WHERE c.matricula = :matricula", Coche.class)
                     .setParameter("matricula", matricula)
                     .getSingleResult();
+            if (coche != null && coche.getPropietario() != null) {
+                Hibernate.initialize(coche.getPropietario().getCoches());
+                }
         } catch (Exception e) {
             // Manejo de excepciones si no se encuentra el coche
             System.err.println("No se encontró un coche con la matrícula: " + matricula);

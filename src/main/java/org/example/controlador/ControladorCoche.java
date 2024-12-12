@@ -13,7 +13,7 @@ public class ControladorCoche {
         this.cocheDao = new JpaCocheDao();
     }
 
-    public void agregarCoche(Coche coche) throws SQLException {
+    public void guardarCoche(Coche coche) throws SQLException {
         Coche cocheExistente = cocheDao.findByMatricula(coche.getMatricula());
         if (cocheExistente != null) {
             throw new IllegalArgumentException("El coche con matrícula " + coche.getMatricula() + " ya existe.");

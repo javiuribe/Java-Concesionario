@@ -1,11 +1,11 @@
 package org.example.controlador;
 
 import org.example.controlador.dao.ClienteDao;
-import org.example.controlador.dao.impl.JdbcClienteDao;
 import org.example.controlador.dao.impl.JpaClienteDao;
 import org.example.modelo.Cliente;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class ControladorCliente {
     private ClienteDao clienteDao;
@@ -22,12 +22,16 @@ public class ControladorCliente {
         clienteDao.save(cliente);
     }
 
-    public Cliente buscarCliente(int id) throws SQLException {
+    public Cliente buscarPorId(int id) throws SQLException {
         Cliente cliente =  clienteDao.findById(id);
         if (cliente == null){
             throw new IllegalArgumentException("No se encontró el cliente con el id:" + id);
         }
         return cliente;
+    }
+
+    public List<Cliente> buscarPorNombre(String nombre) {
+        return clienteDao.findByNombre(nombre);
     }
 
     public void updateCliente(Cliente cliente) throws SQLException {

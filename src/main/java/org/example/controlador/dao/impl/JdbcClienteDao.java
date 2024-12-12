@@ -106,6 +106,11 @@ public class JdbcClienteDao implements ClienteDao {
     }
 
     @Override
+    public List<Cliente> findByNombre(String nombre) {
+        return List.of();
+    }
+
+    @Override
     public void update(Cliente cliente) throws SQLException {
         String query = "UPDATE cliente SET nombre = ?, apellidos = ?, telefono = ? WHERE dni = ?";
         try (Connection conn = getConnection();

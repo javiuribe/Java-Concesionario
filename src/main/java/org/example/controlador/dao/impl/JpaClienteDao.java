@@ -2,12 +2,12 @@ package org.example.controlador.dao.impl;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
-import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.Persistence;
-import jakarta.transaction.Transactional;
 import org.example.controlador.dao.ClienteDao;
 import org.example.modelo.Cliente;
 import org.hibernate.Hibernate;
+
+import java.util.List;
 
 public class JpaClienteDao implements ClienteDao {
     private final EntityManagerFactory entityManagerFactory;
@@ -34,6 +34,18 @@ public class JpaClienteDao implements ClienteDao {
         }
         entityManager.close();
         return cliente;
+    }
+
+    @Override
+    public List<Cliente> findByNombre(String nombre) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<Cliente> clientes = entityManager.createQuery(
+                        "SELECT c FROM Cliente c WHERE c.nombre = :nombre", Cliente.class)
+                .setParameter("nombre", nombre)
+                .getResultList();
+        clientes.forEach(c -> Hibernate.initialize(c.getCoches()));
+        entityManager.close();
+        return clientes;
     }
 
     @Override
