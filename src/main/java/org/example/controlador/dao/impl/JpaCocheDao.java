@@ -23,7 +23,7 @@ public class JpaCocheDao implements CocheDao {
     public void save(Coche coche) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-        if (coche.getPropietario()!=null){
+        if (coche.getPropietario() != null) {
             coche.setPropietario(entityManager.merge(coche.getPropietario()));
         }
         entityManager.persist(coche);
@@ -43,7 +43,7 @@ public class JpaCocheDao implements CocheDao {
                     .getSingleResult();
             if (coche != null && coche.getPropietario() != null) {
                 Hibernate.initialize(coche.getPropietario().getCoches());
-                }
+            }
         } catch (Exception e) {
             // Manejo de excepciones si no se encuentra el coche
             System.err.println("No se encontró un coche con la matrícula: " + matricula);

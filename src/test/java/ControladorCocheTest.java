@@ -27,12 +27,11 @@ class ControladorCocheTest {
         String apellido = "Pérez";
         String telefono = "123456789";
         Cliente cliente = new Cliente(dni, nombre, apellido, telefono);
-        controladorCliente.registrarCliente(cliente);
         Coche coche1 = new Coche("1123HAR", "Ford", "Fiesta", new Date(), cliente);
-        Coche coche2 = new Coche("999HAR", "Opel", "Corsa", new Date(), cliente);
         controladorCoche.guardarCoche(coche1);
+        //El propietario hay que sacarlo de coche1 para que esté persistido y tenga id
+        Coche coche2 = new Coche("999HAR", "Opel", "Corsa", new Date(), coche1.getPropietario());
         controladorCoche.guardarCoche(coche2);
-
     }
 
     @Test

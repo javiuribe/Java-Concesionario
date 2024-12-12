@@ -15,7 +15,7 @@ public class Coche {
     private String modelo;
     @Temporal(TemporalType.DATE)
     private Date fecha;
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Cliente propietario;
 
 
