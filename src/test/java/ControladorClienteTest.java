@@ -38,9 +38,9 @@ public class ControladorClienteTest {
         String apellido = "Rodríguez";
         String telefono = "123456789";
         Cliente cliente = new Cliente(dni, nombre, apellido, telefono);
-        cliente.addCoche(new Coche("1123HAR", "Ferrari", "Focus", new Date(), cliente));
-        cliente.addCoche(new Coche("999HAR", "Opel", "Astra", new Date(), cliente));
-        controladorCliente.guardarClienteConCoches(cliente);
+        cliente.addCoche(new Coche("1123HAR", "Ferrari", "Focus", new Date()));
+        cliente.addCoche(new Coche("999HAR", "Opel", "Astra", new Date()));
+        controladorCliente.registrarCliente(cliente);
         assertEquals(1, cliente.getId());
         Cliente clienteEncontrado = controladorCliente.buscarPorId(1);
         System.out.println("Cliente encontrado: " + clienteEncontrado.getCoches());
@@ -100,6 +100,44 @@ public class ControladorClienteTest {
         controladorCliente.actualizarCliente(clienteRegistrado);
         assertEquals(clienteRegistrado, controladorCliente.buscarPorId(cliente.getId()));
     }
+
+    @Test
+    void buscarClientesConFordFocus() throws SQLException {
+        String dni = "12345678A";
+        String nombre = "Ana";
+        String apellido = "Rodríguez";
+        String telefono = "123456789";
+        Cliente cliente = new Cliente(dni, nombre, apellido, telefono);
+        cliente.addCoche(new Coche("1123HAR", "Ford", "Focus", new Date()));
+        cliente.addCoche(new Coche("999HAR", "Opel", "Astra", new Date()));
+        controladorCliente.registrarCliente(cliente);
+        List<Cliente> clientes = controladorCliente.buscarPorModelo("Ford", "Focus");
+
+        // Verificar que la consulta devuelve al cliente correcto
+        assertFalse(clientes.isEmpty(), "No se encontraron clientes con un Ford Focus");
+        assertEquals(1, clientes.size(), "Debería haber solo un cliente con un Ford Focus");
+        assertEquals(cliente.getDni(), clientes.get(0).getDni(), "El cliente encontrado debe ser el correcto");
+
+        // Imprimir los resultados
+        for (Cliente c : clientes) {
+            System.out.println("Cliente: " + c.getNombre() + " " + c.getApellidos());
+            for (Coche coche : c.getCoches()) {
+                System.out.println("Coche: " + coche.getMarca() + " " + coche.getModelo());
+            }
+        }
+    }
+
+    @Test
+    void borrarCliente() throws SQLException{
+        String dni = "12345678A";
+        String nombre = "Juan";
+        String apellido = "Pérez";
+        String telefono = "123456789";
+        Cliente cliente = new Cliente(dni, nombre, apellido, telefono);
+        controladorCliente.registrarCliente(cliente);
+        controladorCliente.deleteCliente(cliente);
+    }
+
 
 
 }

@@ -16,7 +16,7 @@ public class Cliente {
     private String nombre;
     private String apellidos;
     private String telefono;
-    @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+    @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Coche> coches = new ArrayList<>();
 
     public Cliente(String dni, String nombre,String apellidos, String telefono) {

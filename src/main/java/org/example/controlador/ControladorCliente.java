@@ -18,10 +18,6 @@ public class ControladorCliente {
         clienteDao.save(cliente);
     }
 
-    public void guardarClienteConCoches(Cliente cliente) throws SQLException {
-        clienteDao.save(cliente);
-    }
-
     public Cliente buscarPorId(int id) throws SQLException {
         Cliente cliente =  clienteDao.findById(id);
         if (cliente == null){
@@ -44,5 +40,9 @@ public class ControladorCliente {
 
     public void actualizarCliente(Cliente cliente) throws SQLException {
         clienteDao.update(cliente);
+    }
+
+    public List<Cliente> buscarPorModelo(String marca, String modelo) throws SQLException {
+        return clienteDao.findByModelo(marca, modelo);
     }
 }

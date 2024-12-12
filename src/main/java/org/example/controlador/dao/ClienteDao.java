@@ -12,6 +12,8 @@ public interface ClienteDao {
 
     List<Cliente> findByNombre(String nombre);
 
+    List<Cliente> findByModelo(String marca, String modelo);
+
     void update(Cliente cliente) throws SQLException;
     void delete(Cliente cliente) throws SQLException;
 }

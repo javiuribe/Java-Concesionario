@@ -49,6 +49,18 @@ public class JpaClienteDao implements ClienteDao {
     }
 
     @Override
+    public List<Cliente> findByModelo(String marca, String modelo) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        String jpql = "SELECT cli FROM Cliente cli JOIN cli.coches co WHERE co.marca = :marca AND co.modelo = :modelo";
+        List<Cliente> clientes = entityManager.createQuery(jpql, Cliente.class)
+                .setParameter("marca", marca)
+                .setParameter("modelo", modelo)
+                .getResultList();
+        entityManager.close();
+        return clientes;
+    }
+
+    @Override
     public void update(Cliente cliente) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
@@ -61,6 +73,7 @@ public class JpaClienteDao implements ClienteDao {
     public void delete(Cliente cliente) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
+        cliente = entityManager.merge(cliente);
         entityManager.remove(cliente);
         entityManager.getTransaction().commit();
         entityManager.close();
