@@ -46,7 +46,6 @@ class ControladorCocheTest {
         controladorCoche.guardarCoche(coche);
         coche = controladorCoche.buscarPorMatricula(matricula);
         System.out.println(coche);
-        System.out.println(coche.getPropietario());
     }
 
     @Test

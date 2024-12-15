@@ -68,15 +68,9 @@ public class JpaCocheDao implements CocheDao {
     public void delete(Coche coche) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         entityManager.getTransaction().begin();
-
-        // Asegurarse de que el coche y su propietario estén gestionados
-        Coche managedCoche = entityManager.merge(coche);
-        if (managedCoche != null && managedCoche.getPropietario() != null) {
-            Cliente propietario = managedCoche.getPropietario();
-            propietario.getCoches().remove(managedCoche); // Quitar el coche de la lista del propietario
-        }
-
-        entityManager.remove(managedCoche); // Eliminar el coche
+        // Asegurarse de que el coche
+        coche = entityManager.merge(coche);
+        entityManager.remove(coche);
         entityManager.getTransaction().commit();
         entityManager.close();
     }
