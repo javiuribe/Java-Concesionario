@@ -40,13 +40,9 @@ class ControladorCocheTest {
         String nombre = "Juan";
         String apellido = "Pérez";
         String telefono = "123456789";
-        Cliente cliente = new Cliente(dni, nombre, apellido, telefono);
-        controladorCliente.registrarCliente(cliente);
         String matricula = "1123HAR";
-        String marca = "Toyota";
-        String modelo = "Corolla";
-        Coche coche = new Coche(matricula, marca, modelo, new Date());
-        coche.setPropietario(cliente);
+        Cliente cliente = new Cliente(dni, nombre, apellido, telefono);
+        Coche coche = new Coche(matricula, "Ford", "Fiesta", new Date(), cliente);
         controladorCoche.guardarCoche(coche);
         coche = controladorCoche.buscarPorMatricula(matricula);
         System.out.println(coche);

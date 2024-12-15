@@ -97,6 +97,7 @@ public class ControladorClienteTest {
         String nuevoTelefono = "987654321";
         clienteRegistrado.setNombre(nuevoNombre);
         clienteRegistrado.setTelefono(nuevoTelefono);
+        clienteRegistrado.addCoche(new Coche("1123HAR", "Ferrari", "Focus", new Date()));
         controladorCliente.actualizarCliente(clienteRegistrado);
         assertEquals(clienteRegistrado, controladorCliente.buscarPorId(cliente.getId()));
     }

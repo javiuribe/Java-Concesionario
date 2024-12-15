@@ -45,8 +45,7 @@ public class JpaCocheDao implements CocheDao {
                 Hibernate.initialize(coche.getPropietario().getCoches());
             }
         } catch (Exception e) {
-            // Manejo de excepciones si no se encuentra el coche
-            System.err.println("No se encontró un coche con la matrícula: " + matricula);
+           return null;
         } finally {
             entityManager.close();
         }

@@ -7,6 +7,7 @@ import org.example.controlador.dao.ClienteDao;
 import org.example.modelo.Cliente;
 import org.hibernate.Hibernate;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class JpaClienteDao implements ClienteDao {
@@ -36,17 +37,6 @@ public class JpaClienteDao implements ClienteDao {
         return cliente;
     }
 
-    @Override
-    public List<Cliente> findByNombre(String nombre) {
-        EntityManager entityManager = entityManagerFactory.createEntityManager();
-        List<Cliente> clientes = entityManager.createQuery(
-                        "SELECT c FROM Cliente c WHERE c.nombre = :nombre", Cliente.class)
-                .setParameter("nombre", nombre)
-                .getResultList();
-        clientes.forEach(c -> Hibernate.initialize(c.getCoches()));
-        entityManager.close();
-        return clientes;
-    }
 
     @Override
     public List<Cliente> findByModelo(String marca, String modelo) {
@@ -78,4 +68,22 @@ public class JpaClienteDao implements ClienteDao {
         entityManager.getTransaction().commit();
         entityManager.close();
     }
+
+    @Override
+    public List<Cliente> findByNombre(String nombre) {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+        List<Cliente> clientes = new ArrayList<>();
+        try {
+            clientes = entityManager.createQuery(
+                            "SELECT c FROM Cliente c WHERE c.nombre = :nombre", Cliente.class)
+                    .setParameter("nombre", nombre)
+                    .getResultList();
+        } catch (Exception e) {
+            return clientes;
+        } finally {
+            entityManager.close();
+        }
+        return clientes;
+    }
+
 }
