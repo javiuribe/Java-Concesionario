@@ -1,4 +1,4 @@
-package org.example;
+package org.example.mainJpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -11,7 +11,7 @@ import java.util.Date;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class EjemploRemove {
+public class EjemploMergeJpa {
     public static void main(String[] args) {
         // Configuración inicial de EntityManager
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");
@@ -20,18 +20,29 @@ public class EjemploRemove {
 
         // Crear un cliente y un coche
         Cliente cliente = new Cliente("11111Z", "Jose", "Gomez", "+34123123123");
-        Coche coche = new Coche("888ZZZ", "Toyota", "Corolla", new Date());
-        cliente.addCoche(coche);
 
-        // Persistir el cliente y coche
+        // Persistir el cliente
         entityTransaction.begin();
         entityManager.persist(cliente);  // Persistimos el cliente, lo que persiste también el coche
         entityTransaction.commit();
 
+        // Ahora, creamos un nuevo coche fuera del contexto de persistencia
+        Coche cocheNoGestionado = new Coche("888ZZZ", "Toyota", "Corolla", new Date());
+
+        // Recuperamos un cliente del contexto de persistencia y modificamos su coche
         entityTransaction.begin();
-        cliente = entityManager.find(Cliente.class, 1);
-        Coche cocheRecuperado = cliente.getCoches().getFirst(); // Obtiene el primer coche
-        cliente.removeCoche(cocheRecuperado); // Elimina el coche de la colección
+        Cliente clienteRecuperado = entityManager.find(Cliente.class, 1);
+
+        // cocheNoGestionado no está en el contexto de persistencia.
+        clienteRecuperado.getCoches().add(cocheNoGestionado);
+        entityManager.merge(clienteRecuperado);  // El merge no tiene efecto sobre coche
+        entityTransaction.commit();
+
+        // Verificación
+        entityTransaction.begin();
+        Cliente clienteFinal = entityManager.find(Cliente.class, 1);
+
+        System.out.println("Coches: " + clienteFinal.getCoches());  // Coches contiene el último coche a null
         entityTransaction.commit();
 
         // Cerrar el EntityManager

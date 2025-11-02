@@ -9,6 +9,7 @@ import org.hibernate.Hibernate;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class JpaClienteDao implements ClienteDao {
     private final EntityManagerFactory entityManagerFactory;
@@ -27,14 +28,14 @@ public class JpaClienteDao implements ClienteDao {
     }
 
     @Override
-    public Cliente findById(int id) {
+    public Optional<Cliente> findById(int id) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
         Cliente cliente = entityManager.find(Cliente.class, id);
         if (cliente != null) {
             Hibernate.initialize(cliente.getCoches());
         }
         entityManager.close();
-        return cliente;
+        return Optional.ofNullable(cliente);
     }
 
 

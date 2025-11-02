@@ -6,6 +6,7 @@ import org.example.modelo.Cliente;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public class ControladorCliente {
     private ClienteDao clienteDao;
@@ -19,11 +20,7 @@ public class ControladorCliente {
     }
 
     public Cliente buscarPorId(int id) throws SQLException {
-        Cliente cliente =  clienteDao.findById(id);
-        if (cliente == null){
-            throw new IllegalArgumentException("No se encontró el cliente con el id:" + id);
-        }
-        return cliente;
+        return clienteDao.findById(id).orElseThrow();
     }
 
     public List<Cliente> buscarPorNombre(String nombre) {

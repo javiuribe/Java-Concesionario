@@ -1,4 +1,4 @@
-package org.example;
+package org.example.mainJpa;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
@@ -11,7 +11,7 @@ import java.util.Date;
 
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class EjemploPersist {
+public class EjemploPersistJpa {
     public static void main(String[] args) {
         // Configuración inicial de EntityManager
         EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("default");

@@ -8,6 +8,7 @@ import org.example.modelo.Coche;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 import jakarta.persistence.EntityManager;
 import org.hibernate.Hibernate;
@@ -33,23 +34,16 @@ public class JpaCocheDao implements CocheDao {
 
 
     @Override
-    public Coche findByMatricula(String matricula) {
+    public Optional<Coche> findByMatricula(String matricula) {
         EntityManager entityManager = entityManagerFactory.createEntityManager();
-        Coche coche = null;
-        try {
-            coche = entityManager.createQuery(
-                            "SELECT c FROM Coche c WHERE c.matricula = :matricula", Coche.class)
-                    .setParameter("matricula", matricula)
-                    .getSingleResult();
-            if (coche != null && coche.getPropietario() != null) {
-                Hibernate.initialize(coche.getPropietario().getCoches());
-            }
-        } catch (Exception e) {
-           return null;
-        } finally {
-            entityManager.close();
+        Coche coche = entityManager.createQuery(
+                        "SELECT c FROM Coche c WHERE c.matricula = :matricula", Coche.class)
+                .setParameter("matricula", matricula)
+                .getSingleResult();
+        if (coche != null && coche.getPropietario() != null) {
+            Hibernate.initialize(coche.getPropietario().getCoches());
         }
-        return coche;
+        return Optional.ofNullable(coche);
     }
 
     @Override

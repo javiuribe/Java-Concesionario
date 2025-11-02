@@ -4,11 +4,12 @@ import org.example.modelo.Cliente;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 public interface ClienteDao {
 
     void save(Cliente cliente) throws SQLException;
-    Cliente findById(int id) throws SQLException;
+    Optional<Cliente> findById(int id) throws SQLException;
 
     List<Cliente> findByNombre(String nombre);
 
