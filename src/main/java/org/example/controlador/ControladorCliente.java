@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class ControladorCliente {
-    private ClienteDao clienteDao;
+    private final ClienteDao clienteDao;
 
     public ControladorCliente() throws SQLException {
         this.clienteDao = new JpaClienteDao();
