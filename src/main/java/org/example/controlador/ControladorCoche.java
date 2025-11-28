@@ -5,6 +5,7 @@ import org.example.controlador.dao.impl.JpaCocheDao;
 import org.example.modelo.Coche;
 
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class ControladorCoche {
     private CocheDao cocheDao;
@@ -14,7 +15,7 @@ public class ControladorCoche {
     }
 
     public void guardarCoche(Coche coche) throws SQLException {
-        Coche cocheExistente = cocheDao.findByMatricula(coche.getMatricula());
+        Optional<Coche> cocheExistente = cocheDao.findByMatricula(coche.getMatricula());
         if (cocheExistente != null) {
             throw new IllegalArgumentException("El coche con matrícula " + coche.getMatricula() + " ya existe.");
         }
@@ -22,7 +23,7 @@ public class ControladorCoche {
     }
 
     public Coche buscarPorMatricula(String matricula) throws SQLException {
-        return cocheDao.findByMatricula(matricula);
+        return cocheDao.findByMatricula(matricula).get();
     }
 
     public void actualizarCoche(Coche coche) throws SQLException {
