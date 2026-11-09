@@ -7,6 +7,7 @@ import org.example.controlador.dao.ClienteDao;
 import org.example.modelo.Cliente;
 import org.hibernate.Hibernate;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -38,6 +39,22 @@ public class JpaClienteDao implements ClienteDao {
         return Optional.ofNullable(cliente);
     }
 
+    @Override
+    public List<Cliente> findAll() throws SQLException {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            List<Cliente> clientes = entityManager.createQuery(
+                    "SELECT DISTINCT c FROM Cliente c LEFT JOIN FETCH c.coches",
+                    Cliente.class
+            ).getResultList();
+
+            return clientes;
+
+        } finally {
+            entityManager.close();
+        }
+    }
 
     @Override
     public List<Cliente> findByModelo(String marca, String modelo) {

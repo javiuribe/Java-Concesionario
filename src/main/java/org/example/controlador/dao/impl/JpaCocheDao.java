@@ -32,6 +32,31 @@ public class JpaCocheDao implements CocheDao {
         entityManager.close();
     }
 
+    @Override
+    public Optional<Coche> findById(int id) throws SQLException {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            Coche coche = entityManager.find(Coche.class, id);
+            return Optional.ofNullable(coche);
+        } finally {
+            entityManager.close();
+        }
+    }
+
+    @Override
+    public List<Coche> findAll() throws SQLException {
+        EntityManager entityManager = entityManagerFactory.createEntityManager();
+
+        try {
+            return entityManager.createQuery(
+                    "SELECT c FROM Coche c", Coche.class
+            ).getResultList();
+        } finally {
+            entityManager.close();
+        }
+    }
+
 
     @Override
     public Optional<Coche> findByMatricula(String matricula) {
